@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS,
     },
 });
-
+//Get ratng
 router.get("/", async (req, res) => {
     try {
 
