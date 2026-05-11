@@ -13,13 +13,88 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+// GET ALL REVIEWS
+router.get("/", async (req, res) => {
+    try {
+
+        const reviews = await Contact.find().sort({
+            createdAt: -1,
+        });
+
+        res.status(200).json(reviews);
+
+    } catch (error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            error: "Server Error",
+        });
+    }
+});
+//Delete ratng
+router.delete("/:id", async (req, res) => {
+
+    try {
+
+        const deleted = await Contact.findByIdAndDelete(req.params.id);
+
+        if (!deleted) {
+            return res.status(404).json({
+                error: "Review not found"
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Review deleted successfully"
+        });
+
+    } catch (error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            error: "Server Error"
+        });
+    }
+});
+
+// GET SINGLE USER REVIEW BY EMAIL
+router.get("/:email", async (req, res) => {
+
+    try {
+
+        const email = req.params.email;
+
+        if (!email) {
+            return res.status(400).json({
+                error: "Email is required"
+            });
+        }
+
+        const reviews = await Contact.find({ email })
+            .sort({ createdAt: -1 });
+
+        res.status(200).json(reviews);
+
+    } catch (error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            error: "Server Error"
+        });
+    }
+});
+
 // POST /api/contact
 router.post("/", async (req, res) => {
-    const { name, email, message } = req.body;
+    const { name, email, message, rating } = req.body;
 
     try {
         // ✅ Validation
-        if (!name || !email || !message) {
+        if (!name || !email || !message || !rating) {
             return res.status(400).json({
                 error: "All fields (name, email, message) are required",
             });
@@ -37,6 +112,7 @@ router.post("/", async (req, res) => {
             name,
             email,
             message,
+            rating,
         });
 
         await newContact.save();
@@ -51,6 +127,7 @@ router.post("/", async (req, res) => {
         <hr/>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
+         console.log("Rating:", rating + " Star");
         <p><strong>Message:</strong></p>
         <p>${message}</p>
       `,

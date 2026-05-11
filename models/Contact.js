@@ -20,6 +20,12 @@ const contactSchema = new mongoose.Schema(
             trim: true,
             minlength: 5,
         },
+        rating: {
+            type: Number,
+            required: true,
+            min: 1,
+            max: 5,
+        },
     },
     { timestamps: true } // adds createdAt & updatedAt
 );
