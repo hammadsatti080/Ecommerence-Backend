@@ -75,9 +75,12 @@ exports.updateOrderStatus = async (req, res) => {
 
         const update = {};
         if (status) {
-            if (!["pending", "completed", "cancelled"].includes(status)) {
+            const allowed = ["pending", "completed", "delivered", "cancelled"];
+
+            if (!allowed.includes(status)) {
                 return res.status(400).json({ message: "Invalid status" });
             }
+
             update.status = status;
         }
         if (deliveryTime) update.deliveryTime = deliveryTime;
