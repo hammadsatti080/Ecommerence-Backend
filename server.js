@@ -13,7 +13,7 @@ const app = express();
 
 //app.use(cors());
 app.use(cors({
-   origin: "https://ecommerence-bay.vercel.app"
+  origin: "https://ecommerence-bay.vercel.app"
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,6 +27,8 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
 app.use("/api/saved", require("./routes/savedRoutes"));
 app.use("/api/profile", require("./routes/userprofileRoutes"));
+app.use("/api/rating", require("./routes/ratingRoutes"));
+
 // Test route
 app.get('/', (req, res) => {
   res.json({ message: '🚀 E-commerce API is running...' });
