@@ -4,6 +4,7 @@ const {
     createOrder,
     getOrders,
     updateOrderStatus,
+    deleteOrder,
 } = require("../controllers/orderController");
 
 // User creates an order
@@ -15,4 +16,5 @@ router.get("/", getOrders);
 // Admin updates order status
 router.put("/:id", updateOrderStatus);
 
+router.delete("/:id", deleteOrder);
 module.exports = router;
